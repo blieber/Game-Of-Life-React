@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import './App.css';
 
+// TODO - props types (?) boolean
 function Square(props) {
   return (
     <button className="square" onClick={props.onClick}>
-      {props.value}
+      {props.value ? ":-)" : ""}
     </button>
   );
 }
@@ -14,7 +14,7 @@ class Board extends React.Component {
   renderSquare(i) {
     return (
       <Square
-        value={this.props.squares[i]}
+        value={true}
         onClick={() => this.props.onClick(i)}
       />
     );
