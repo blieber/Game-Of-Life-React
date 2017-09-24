@@ -1,6 +1,7 @@
 // Learning tests for using matrix from mathjs
 
 import math from 'mathjs'
+import range from 'range-function'
 
 describe("2D Matrix", () => {
     const m = math.matrix([[true, false], [true, true]]);
@@ -26,5 +27,10 @@ describe("2D Matrix", () => {
         let m2 = m.clone();
         m2.set([0, 0], false)
         expect(m2.get([0, 0])).toBe(false);
+    });
+
+    it('Can map range', () => {
+        let mapped_range = range(0, m.size()[0]).map(i => i+1)
+        expect(mapped_range).toEqual([1, 2])
     });
 });

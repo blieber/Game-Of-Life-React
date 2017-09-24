@@ -30,6 +30,8 @@ function cellUpdatesToAlive(row, col, cells) {
     return count === 3 || (count === 4 && cells.get([row, col]));
 }
 
+// Calculate the next generation of cells
+// Returns next generation matrix
 // cells is a 2D matrix of booleans
 export default function getNextGeneration(cells) {
 
