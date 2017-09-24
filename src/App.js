@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import range from 'range-function'
-import math from 'mathjs'
 import getNextGeneration from "./rules"
+import {gliderGunBoard} from "./boards"
 import './App.css';
 
 function Cell(props) {
@@ -39,11 +39,7 @@ class Game extends React.Component {
   constructor() {
     super();
     this.state = {
-      cells: math.matrix([[true, true, true, false, true], 
-                          [false, true, false, false, true], 
-                          [true, false, true, true, false], 
-                          [false, true, false, false, true], 
-                          [true, false, true, false, false]]),
+      cells: gliderGunBoard,
     };
   }
 
