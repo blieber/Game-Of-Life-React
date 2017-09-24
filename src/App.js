@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import range from 'range-function'
 import math from 'mathjs'
+import getNextGeneration from "./rules"
 import './App.css';
 
-// TODO - props types (?) boolean
 function Cell(props) {
   return (
     <button className="cell" onClick={props.onClick}>
@@ -18,7 +18,7 @@ class Board extends React.Component {
       <Cell
         alive={this.props.cells.get([i, j])}
         onClick={() => this.props.onClick(i)}
-        key={i, j}
+        key={this.props.cells.size()[0] * i + j}
       />
     );
   }
@@ -39,18 +39,18 @@ class Game extends React.Component {
   constructor() {
     super();
     this.state = {
-      cells: math.matrix([[true, true], [false, true]]),
+      cells: math.matrix([[true, true, true, false, true], 
+                          [false, true, false, false, true], 
+                          [true, false, true, true, false], 
+                          [false, true, false, false, true], 
+                          [true, false, true, false, false]]),
     };
   }
 
   handleClick(i) {
-    /*this.setState({
-      history: history.concat([{
-        squares: squares,
-      }]),
-      stepNumber: history.length,
-      xIsNext: !this.state.xIsNext,
-    });*/
+    this.setState({
+      cells: getNextGeneration(this.state.cells),
+    });
   }
 
   render() {
@@ -63,7 +63,7 @@ class Game extends React.Component {
           />
         </div>
         <div className="game-info">
-          <div>{"hi"}</div>
+          <div>{"Click any cell to advance to the next generation"}</div>
         </div>
       </div>
     );
