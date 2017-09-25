@@ -66,14 +66,12 @@ class Game extends React.Component {
   }
 }
 
-class App extends Component {
-  render() {
-    return (
-      <div className="App">
-        <Game />
-      </div>
-    );
-  }
+function App(props) {
+  return (
+    <div className="App">
+      <Game />
+    </div>
+  );
 }
 
 export default App;
