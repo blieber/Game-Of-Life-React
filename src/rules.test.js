@@ -1,6 +1,30 @@
 import getNextGeneration from './rules'
 import math from "mathjs"
 
+// TODO - reuse test code for cleaner testing
+function describeNextGeneration(description, expected_result, prev_generation) {
+    it(description, () => {
+        let nextGen = getNextGeneration(math.matrix(prev_generation));
+        expect(nextGen).toEqual(math.matrix(expected_result));
+    });
+}
+
+const t = true;
+const f = false;
+
+describeNextGeneration(
+    "Handle starvation center alive, all dead neighbors 3x3",
+    [
+        [f, f, f],
+        [f, f, f],
+        [f, f, f],
+    ], [
+        [f, f, f],
+        [f, t, f],
+        [f, f, f],
+    ],
+);
+
 describe("Trivial matrices", () => {
 
     it('Handles empty matrix', () => {
@@ -18,6 +42,24 @@ describe("Trivial matrices", () => {
         expect(nextGen).toEqual(math.matrix([[false]]));
     });
 });
+
+describe("Edge matrices", () => {
+
+    it('Handles 1x3 matrix, all dead', () => {
+        let nextGen = getNextGeneration(math.matrix([[false, false, false]]))
+        expect(nextGen).toEqual(math.matrix([[false, false, false]]));
+    });
+
+    it('Handles 1x3 matrix, bottom alive', () => {
+        let nextGen = getNextGeneration(math.matrix([[false, false, true]]))
+        expect(nextGen).toEqual(math.matrix([[false, false, false]]));
+    });
+
+    it('Handles 1x3 matrix, all alive', () => {
+        let nextGen = getNextGeneration(math.matrix([[true, true, true]]))
+        expect(nextGen).toEqual(math.matrix([[false, true, false]]));
+    });
+})
 
 describe("3x3 all scenarios", () => {
 

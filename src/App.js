@@ -4,10 +4,10 @@ import getNextGeneration from "./rules"
 import {gliderGunBoard} from "./boards"
 import './App.css';
 
-function Cell(props) {
+function Cell({onClick, alive}) {
   return (
-    <button className="cell" onClick={props.onClick}>
-      {props.alive ? ":-)" : ""}
+    <button className="cell" onClick={onClick}>
+      {alive ? ":-)" : ""}
     </button>
   );
 }
@@ -17,7 +17,7 @@ class Board extends React.Component {
     return (
       <Cell
         alive={this.props.cells.get([i, j])}
-        onClick={() => this.props.onClick(i)}
+        onClick={this.props.onClick}
         key={this.props.cells.size()[0] * i + j}
       />
     );
@@ -39,27 +39,51 @@ class Game extends React.Component {
   constructor() {
     super();
     this.state = {
-      cells: gliderGunBoard,
+      history: [gliderGunBoard],
+      currentGenerationIndex: 0,
     };
   }
 
-  handleClick(i) {
+  handleClick = () => {
+    const { history } = this.state;
+    let nextGeneration = getNextGeneration(history[history.length - 1]);
+
     this.setState({
-      cells: getNextGeneration(this.state.cells),
+      history: history.concat(nextGeneration),
+      currentGenerationIndex: history.length,
+    });
+  }
+
+  updateGeneration(generation) {
+    this.setState({
+      currentGenerationIndex: generation
     });
   }
 
   render() {
+    const { history, currentGenerationIndex } = this.state;
     return (
       <div className="game">
         <div className="game-board">
           <Board
-            cells={this.state.cells}
-            onClick={(i) => this.handleClick(i)}
+            cells={history[currentGenerationIndex]}
+            onClick={this.handleClick}
+          />
+          <input
+            type="range"
+            min={0}
+            max={history.length - 1}
+            value={currentGenerationIndex}
+            onChange={(event) => this.updateGeneration(event.target.value)}
           />
         </div>
         <div className="game-info">
-          <div>{"Click any cell to advance to the next generation"}</div>
+          <div>
+            Click any cell to advance to the next generation
+          </div>
+          <div>
+            You're looking at gen #{currentGenerationIndex}
+          </div>
         </div>
       </div>
     );
